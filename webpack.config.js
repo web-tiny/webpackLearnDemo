@@ -1,7 +1,7 @@
 const path = require('path')
+const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
-const webpack = require('webpack')
 
 module.exports = {
   // entry: './src/index.js',
@@ -38,6 +38,11 @@ module.exports = {
       {
         test: /\.xml$/,
         use: ["xml-loader"]
+      },
+      {
+        test: /\.js$/,
+        include: path.resolve(__dirname, 'src'),
+        loader: "babel-loader"
       }
     ]
   },
@@ -49,7 +54,11 @@ module.exports = {
     // 第二问：每次bundle前清理dist文件，怎么做？
     new CleanWebpackPlugin(["dist"]),
     new webpack.NamedModulesPlugin(),
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+
+    new webpack.optimize.CommonsChunkPlugin({
+      name: "manifest"
+    })
   ],
   /**
    * 第三问：如何追踪bundle中不同js文件的error
@@ -72,4 +81,6 @@ module.exports = {
   /**
    * 第六问：bundle中如何做代码分离
    */
+  // 第七问：缓存，如何才能确保webpack编译生成的文件能被客户端缓存，而文件内容变化后能请求到新的文件
+  // 第八问：如何将第三方库提取到单独的vendor chunk 文件中？
 };

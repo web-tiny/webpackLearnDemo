@@ -1,4 +1,4 @@
-export default function printMe () {
-  // console.log('I get called from print.js !')
-  console.log('updating print.js...')
+
+export default function print(text) {
+  console.log(text);
 }
